@@ -1,0 +1,16 @@
+﻿  origem.c
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(258,43): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(269,39): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(723,20): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(723,8): warning C4024: 'fgets': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(812,34): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(812,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(895,28): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(895,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(962,34): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(962,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(972,38): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(972,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1026,36): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1026,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+  projeto_olimpiadas.vcxproj -> C:\Users\Plínio\Source\Repos\PSONetto\projeto_olimpiadas\x64\Debug\projeto_olimpiadas.exe
