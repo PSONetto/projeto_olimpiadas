@@ -28,10 +28,6 @@ typedef struct {
 } data_t;
 
 typedef struct {
-	char pais[TAM_MAX], cidade[TAM_MAX];
-} naturalidade_t;
-
-typedef struct {
 	int ouro, prata, bronze;
 } medalha_t;
 
@@ -69,81 +65,35 @@ typedef struct {
 } treino_t;
 
 typedef struct {
-	char nome[TAM_MAX], especialidade[TAM_MAX];
+	char nome[TAM_MAX], especialidade[TAM_MAX], pais[TAM_MAX];
 	char genero;
-	data_t data_nascimento;
-	naturalidade_t naturalidade;
+	data_t data;
 } medico_t;
 
-// Misc
-void limpa_tela();
-int apenas_letras(char *texto);
-void capitaliza(char *texto);
-void recebe_string(char *nome, char tipo[TAM_MAX]);
-char recebe_genero(char genero);
-data_t recebe_data(data_t data);
+typedef struct {
+	char nome[TAM_MAX], especialidade[TAM_MAX], pais[TAM_MAX];
+	char genero;
+	data_t data;
+} funcionario_t;
 
-// Login
-void cadastra_login();
-void login();
-
-// Menus
-void menu_inicial();
-void menu_cadastros();
-void menu_relatorios();
-void menu_atletas();
-void menu_logins();
-
-// Cadastros
-void cadastra_atleta();
-void busca_atleta();
-void lista_atletas();
-void cadastra_modalidade();
-void cadastra_pais();
-void cadastra_medico();
-void cadastra_alojamento();
-void cadastra_local_evento();
-
-// Mostradores
-void mostra_atleta(atleta_t info);
-void mostra_modalidade(modalidade_t info);
-void mostra_pais(pais_t info);
-void mostra_alojamento(alojamento_t info);
-void mostra_medico(medico_t info);
-void mostra_local_evento(local_evento_t info);
-
-int main(int argc, char *argv[]) {
-	printf(" ______________________________________________\n");
-	printf("|                                              |\n");
-	printf("|   Bem-vindo ao aplicativo de gerenciamento   |\n");
-	printf("|       das Olimpiadas de Paris de 2024!       |\n");
-	printf("|                                              |\n");
-	printf("|                                              |\n");
-	printf("|  Unip 2021 (PIM)                             |\n");
-	printf("|  Por: Plinio Netto e Kelvin                  |\n");
-	printf("|______________________________________________|\n");
-
-	getchar();
-
-	login();
-
-	menu_inicial();
-
-	return EXIT_SUCCESS;
-}
+typedef struct {
+	char nome[TAM_MAX], especialidade[TAM_MAX], pais[TAM_MAX];
+	char genero;
+	data_t data;
+} voluntario_t;
 
 /* Função que detecta o SO do usuário para aplicar o comando correto ao sistema.
  * É muito mais elegante do que usar apenas o comando system, já que este pode
  * variar de SO, como é o caso do cls e clear.
  */
 void limpa_tela() {
-	#ifdef _linux_ // se for linux.
+#ifdef _linux_ // se for linux.
 	system("clear");
-	#elif _WIN32 // se for windows.
+#elif _WIN32 // se for windows.
 	system("cls");
-	#else
+#else
 
-	#endif
+#endif
 }
 
 /* Verifica se a string recebida contém apenas
@@ -152,7 +102,7 @@ void limpa_tela() {
  * com números ou caracteres especiais
  * em um campo de nome por exemplo.
  */
-int apenas_letras(char *texto) {
+int apenas_letras(char* texto) {
 	int i;
 
 	for (i = 0; texto[i] != '\0'; ++i) {
@@ -168,7 +118,7 @@ int apenas_letras(char *texto) {
  * já que a única diferença entre uma letra maiuscula e minuscula é
  * o quinto bit do ASCII.
  */
-void capitaliza(char *texto) {
+void capitaliza(char* texto) {
 	for (int i = 0; i < strlen(texto); i++) {
 		texto[i] |= (1 << 5);
 		if (!i || texto[i - 1] == ' ')
@@ -179,7 +129,7 @@ void capitaliza(char *texto) {
 /* O ponteiro string recebe o texto, a variável tipo define se é nome,
  * modalidade, pais...
  */
-void recebe_string(char *string, char tipo[TAM_MAX]) {
+void recebe_string(char* string, char tipo[TAM_MAX]) {
 	do {
 		printf("\n%s: ", tipo);
 		fgets(string, TAM_MAX, stdin);
@@ -189,11 +139,11 @@ void recebe_string(char *string, char tipo[TAM_MAX]) {
 			printf("%s deve conter apenas letras!\n", tipo);
 		}
 	} while (!apenas_letras(string));
-
-	capitaliza(string);
 }
 
-char recebe_genero(char genero) {
+char recebe_genero() {
+	char genero;
+
 	do {
 		printf("\nGenero (M / F): ");
 		genero = getchar();
@@ -232,12 +182,55 @@ data_t recebe_data(data_t data) {
 		printf("Ano: ");
 		scanf_s("%d%*c", &data.ano);
 
-		if (data.ano < 1900 || data.ano > 2014) {
+		if (data.ano < 1900 || data.ano > 2025) {
 			printf("\nData invalida!\n");
 		}
-	} while (data.ano < 1900 || data.ano > 2014);
+	} while (data.ano < 1900 || data.ano > 2025);
 
 	return data;
+}
+
+int recebe_numero(char tipo[TAM_MAX]) {
+	int numero;
+	do {
+		printf("\n%s: ", tipo);
+		scanf_s("%d%*c", &numero);
+		if (numero <= 0) {
+			printf("\nEntrada invalida, tente novamente!\n");
+		}
+	} while (numero <= 0);
+
+	return numero;
+}
+
+void recebe_bool(bool booleano, char tipo[TAM_MAX]) {
+	int opcao;
+
+	do {
+		printf("\n%s?\n1 = Sim / 0 = Nao\n>>>   ", tipo);
+		scanf_s("%d%*c", &opcao);
+
+		switch (opcao) {
+		case 0:
+			booleano = false;
+			break;
+		case 1:
+			booleano = true;
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
+		}
+	} while (opcao != 0 && opcao != 1);
+}
+
+int compara_datas(data_t data1, data_t data2) {
+	if (data1.dia == data2.dia && data1.mes == data2.mes && 
+		data1.ano == data2.ano) {
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
 /* Consegui fazer com que o programa fosse capaz de armazenar mais de
@@ -246,7 +239,7 @@ data_t recebe_data(data_t data) {
 void cadastra_login() {
 	int tam_usuario, tam_senha;
 	login_t login_novo;
-	FILE *p_login;
+	FILE* p_login;
 
 	memset(&login_novo, 0, sizeof(login_t));
 
@@ -298,7 +291,7 @@ void login() {
 	char in_usuario[TAM_MAX], in_senha[TAM_MAX];
 	bool login_correto = false;
 	login_t login_info;
-	FILE *p_login;
+	FILE* p_login;
 
 	fopen_s(&p_login, "login.txt", "r"); /* Modo Read Only */
 
@@ -358,272 +351,97 @@ void login() {
 	fclose(p_login); /* Não esquecer de fechar o arquivo */
 }
 
-/* Todos os menus seguirão este modelo de menu switch, foi o jeito mais facil
- * que encontrei, mas com certeza deve ter um jeito em que não seria
- * necessário criar um menu específico para cada tela.
- */
-void menu_inicial() {
-	int menu_opcao;
-
-	do {
-		printf(" ________________ MENU INICIAL ________________\n");
-		printf("|                                              |\n");
-		printf("|          Selecione uma das opcoes:           |\n");
-		printf("|   1 - Cadastros                              |\n");
-		printf("|   2 - Relatorios                             |\n");
-		printf("|   3 - Gerenciamentos                         |\n");
-		printf("|   4 - Alterar Logins                         |\n");
-		printf("|   0 - Sair                                   |\n");
-		printf("|______________________________________________|\n>>>  ");
-		scanf_s("%d%*c", &menu_opcao);
-
-		switch (menu_opcao) {
-			case 1:
-				limpa_tela();
-				menu_cadastros();
-				break;
-			case 2:
-				limpa_tela();
-				menu_relatorios();
-				break;
-			case 3:
-				limpa_tela();
-
-				break;
-			case 4:
-				limpa_tela();
-				menu_logins();
-				break;
-			case 0:
-				printf("...Saindo...\n");
-				break;
-			default:
-				printf("Opcao invalida, tente novamente!\n");
-				getchar();
-				limpa_tela();
-				break;
-		}
-	} while (menu_opcao != 0);
+void mostra_atleta(atleta_t info) {
+	printf("Informacoes do Atleta:\n\nNome: %s\n", info.nome);
+	printf("Genero: %c\n", info.genero);
+	printf("Data de Nascimento: %02d/%02d/%d\n", info.data_nascimento.dia,
+		info.data_nascimento.mes, info.data_nascimento.ano);
+	printf("Naturalidade: %s\n", info.pais);
+	printf("Modalidade Esportiva: %s\n\n\n", info.modalidade);
 }
 
-void menu_cadastros() {
-	int menu_opcao;
-
-	do {
-		printf(" _______________ MENU CADASTROS _______________\n");
-		printf("|                                              |\n");
-		printf("|         Selecione uma das opcoes:            |\n");
-		printf("|   1 - Atletas                                |\n");
-		printf("|   2 - Modalidades Olimpicas                  |\n");
-		printf("|   3 - Paises Participantes                   |\n");
-		printf("|   4 - Alojamentos                            |\n");
-		printf("|   5 - Locais de Eventos                      |\n");
-		printf("|   6 - Agendamento de Treino                  |\n");
-		printf("|   7 - Medicos                                |\n");
-		printf("|   8 - Funcionarios                           |\n");
-		printf("|   9 - Voluntarios                            |\n");
-		printf("|  10 - Controle de Contingente (COVID-19)     |\n");
-		printf("|   0 - Voltar                                 |\n");
-		printf("|______________________________________________|\n>>>  ");
-		scanf_s("%d%*c", &menu_opcao);
-
-		switch (menu_opcao) {
-			case 1:
-				limpa_tela();
-				cadastra_atleta();
-				break;
-			case 2:
-				limpa_tela();
-				cadastra_modalidade();
-				break;
-			case 3:
-				limpa_tela();
-				cadastra_pais();
-				break;
-			case 4:
-				limpa_tela();
-				cadastra_alojamento();
-				break;
-			case 5:
-				limpa_tela();
-				cadastra_local_evento();
-				break;
-			case 6:
-				limpa_tela();
-				break;
-			case 7:
-				limpa_tela();
-				break;
-			case 8:
-				limpa_tela();
-				break;
-			case 9:
-				limpa_tela();
-				break;
-			case 10:
-				limpa_tela();
-				break;
-			case 11:
-				limpa_tela();
-				break;
-			case 0:
-				limpa_tela();
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				getchar();
-				limpa_tela();
-				break;
-		}
-	} while (menu_opcao != 0);
+void mostra_modalidade(modalidade_t info) {
+	printf("Informacoes da Modalidade:\n\nNome: %s\n", info.nome);
+	printf("Equipamentos Necessarios: %s\n", info.equipamentos);
+	printf("Participantes: %d\n", info.participantes);
+	if (info.equipe) {
+		printf("Esporte Coletivo\n\n\n");
+	}
+	else {
+		printf("Esporte Individual\n\n\n");
+	}
 }
 
-void menu_relatorios() {
-	int menu_opcao;
-
-	do {
-		printf(" _______________ MENU RELATORIOS ______________\n");
-		printf("|                                              |\n");
-		printf("|         Selecione uma das opcoes:            |\n");
-		printf("|   1 - Calendario Olimpico                    |\n");
-		printf("|   2 - Contagem de Medalhas                   |\n");
-		printf("|   3 - Medalhistas                            |\n");
-		printf("|   4 - Total de Medalhas Distribuidas         |\n");
-		printf("|   0 - Voltar                                 |\n");
-		printf("|______________________________________________|\n>>>  ");
-		scanf_s("%d%*c", &menu_opcao);
-
-		switch (menu_opcao) {
-			case 1:
-				limpa_tela();
-				menu_atletas();
-				break;
-			case 2:
-				printf("Opcao 2");
-				break;
-			case 3:
-				printf("Opcao 3");
-				break;
-			case 4:
-				printf("Opcao 4");
-				break;
-			case 5:
-				printf("Opcao 5");
-				break;
-			case 6:
-				printf("Opcao 6");
-				break;
-			case 0:
-				limpa_tela();
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				getchar();
-				limpa_tela();
-				break;
-		}
-	} while (menu_opcao != 0);
+void mostra_pais(pais_t info) {
+	printf("Informacoes do Pais:\n\nNome: %s\n", info.nome);
+	printf("Descricao: %s\n", info.descricao);
+	if (info.destaque) {
+		printf("Destaque!\n\n\n");
+	}
 }
 
-/* Talvez vá para a área de gerenciamento */
-void menu_atletas() {
-	int opcao_menu;
-
-	do {
-		printf(" ___________________ Atletas __________________\n");
-		printf("|                                              |\n");
-		printf("|         Selecione uma das opcoes:            |\n");
-		printf("|   1 - Procurar                               |\n");
-		printf("|   2 - Listar                                 |\n");
-		printf("|   0 - Voltar                                 |\n");
-		printf("|______________________________________________|\n>>>  ");
-		scanf_s("%d%*c", &opcao_menu);
-
-		switch (opcao_menu) {
-			case 1:
-				limpa_tela();
-				busca_atleta();
-				break;
-			case 2:
-				limpa_tela();
-				lista_atletas();
-				break;
-			case 0:
-				limpa_tela();
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				getchar();
-				limpa_tela();
-				break;
-		}
-	} while (opcao_menu != 0);
+void mostra_alojamento(alojamento_t info) {
+	printf("Informacoes do Alojamento:\n\nNome: %s\n", info.nome);
+	printf("Tipo do Alojamento: %s\n", info.tipo);
+	printf("Endereco: %s\n", info.endereco);
+	printf("Capacidade: %d pessoas\n", info.capacidade);
 }
 
-void menu_logins() {
-	int opcao_menu;
-
-	do {
-		printf(" ___________________ LOGINS ___________________\n");
-		printf("|                                              |\n");
-		printf("|         Selecione uma das opcoes:            |\n");
-		printf("|   1 - Novo Login                             |\n");
-		printf("|   2 - Logins Cadastrados                     |\n");
-		printf("|   3 - Remover Login                          |\n");
-		printf("|   0 - Voltar                                 |\n");
-		printf("|______________________________________________|\n>>>  ");
-		scanf_s("%d%*c", &opcao_menu);
-
-		switch (opcao_menu) {
-			case 1:
-				limpa_tela();
-				cadastra_login();
-
-				break;
-			case 2:
-				limpa_tela();
-				lista_atletas();
-
-				break;
-			case 3:
-				printf("Opcao 3");
-				break;
-			case 0:
-				limpa_tela();
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-
-				getchar();
-				limpa_tela();
-
-				break;
-		}
-	} while (opcao_menu != 0);
+void mostra_local_evento(local_evento_t info) {
+	printf("Informacoes do Local de Evento:\n\nNome: %s\n", info.nome);
+	printf("Local do Evento: %s\n", info.cidade);
+	printf("Capacidade: %d pessoas\n", info.capacidade);
 }
 
-/* Funciona basicamente como o cadastro de login. Recebe as informações
- * em um objeto do tipo em questão e o armazena em arquivo .txt . Um
- * aqruivo binário talves fosse melhor para este caso, mas o pdf do
- * PIM especifica que os dados devem ser salvos em .txt .
- */
+void mostra_medico(medico_t info) {
+	printf("Informacoes do Medico:\n\nNome: %s\n", info.nome);
+	printf("Genero: %c\n", info.genero);
+	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
+		info.data.mes, info.data.ano);
+	printf("Naturalidade: %s\n", info.pais);
+	printf("Especialidade Medica: %s\n\n\n", info.especialidade);
+}
+
+void mostra_treino(treino_t info) {
+	printf("Informacoes do Treino:\n\Local: %s\n", info.local);
+	printf("Data: %02d/%02d/%d\n", info.data.dia, info.data.mes,
+		info.data.ano);
+}
+
+void mostra_funcionario(funcionario_t info) {
+	printf("Informacoes do Funcionario:\n\nNome: %s\n", info.nome);
+	printf("Genero: %c\n", info.genero);
+	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
+		info.data.mes, info.data.ano);
+	printf("Naturalidade: %s\n", info.pais);
+	printf("Função: %s\n\n\n", info.especialidade);
+}
+
+void mostra_voluntario(voluntario_t info) {
+	printf("Informacoes do Voluntario:\n\nNome: %s\n", info.nome);
+	printf("Genero: %c\n", info.genero);
+	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
+		info.data.mes, info.data.ano);
+	printf("Naturalidade: %s\n", info.pais);
+	printf("Função: %s\n\n\n", info.especialidade);
+}
+
 void cadastra_atleta() {
 	int manter;
 	atleta_t novo_atleta, info_atleta;
-	FILE *p_atletas;
+	FILE* p_atletas;
 
 	memset(&novo_atleta, 0, sizeof(atleta_t));
 	memset(&info_atleta, 0, sizeof(atleta_t));
 
-	
-
 	printf("Insira as informacoes do atleta:\n");
 
 	recebe_string(novo_atleta.nome, "Nome");
+	capitaliza(&novo_atleta);
 
 	fopen_s(&p_atletas, "atletas.txt", "r");
 
-	if(p_atletas != NULL) {
+	if (p_atletas != NULL) {
 
 		while (!feof(p_atletas)) {
 			fread(&info_atleta, sizeof(atleta_t), 1, p_atletas);
@@ -632,7 +450,7 @@ void cadastra_atleta() {
 				printf("\n");
 				mostra_atleta(info_atleta);
 
-				printf("Este atleta já existe!\n");
+				printf("Este atleta ja existe!\n");
 
 				rewind(p_atletas);
 
@@ -646,7 +464,7 @@ void cadastra_atleta() {
 		fclose(p_atletas);
 	}
 
-	novo_atleta.genero = recebe_genero(novo_atleta.genero);
+	novo_atleta.genero = recebe_genero();
 
 	novo_atleta.data_nascimento = recebe_data(novo_atleta.data_nascimento);
 
@@ -685,12 +503,13 @@ void cadastra_atleta() {
 	limpa_tela();
 }
 
+/*
 void busca_atleta() {
 	int i = 0;
 	char nome_atleta[TAM_MAX];
 	bool encontrado = false;
 	atleta_t atleta_info;
-	FILE *p_atletas;
+	FILE* p_atletas;
 
 	// Abre o arquivo em modo read only.
 	fopen_s(&p_atletas, "atletas.txt", "r");
@@ -749,10 +568,11 @@ void busca_atleta() {
 
 	fclose(p_atletas); // fecha o arquivo.
 }
+*/
 
 void lista_atletas() {
 	atleta_t atleta_info;
-	FILE *p_atletas;
+	FILE* p_atletas;
 
 	// Abre o arquivo binário em modo read only.
 	fopen_s(&p_atletas, "atletas.txt", "r");
@@ -784,52 +604,53 @@ void lista_atletas() {
 
 	getchar();
 	limpa_tela();
-}
+}	
 
 void cadastra_modalidade() {
-	int manter, opcao;
-	modalidade_t nova_modalidade;
-	FILE *p_modalidades;
+	int manter;
+	modalidade_t nova_modalidade, info_modalidade;
+	FILE* p_modalidades;
 
 	memset(&nova_modalidade, 0, sizeof(modalidade_t));
+	memset(&info_modalidade, 0, sizeof(modalidade_t));
 
 	printf("Insira as informacoes da modalidade:\n");
-	printf("\nNome: ");
-	fgets(nova_modalidade.nome, TAM_MAX, stdin);
-	nova_modalidade.nome[strcspn(nova_modalidade.nome, "\n")] = 0;
-	capitaliza(&nova_modalidade.nome);
 
-	printf("\nEquipamentos necessarios: ");
-	fgets(nova_modalidade.equipamentos, TAM_MAX, stdin);
-	nova_modalidade.equipamentos
-		[strcspn(nova_modalidade.equipamentos, "\n")] = 0;
+	recebe_string(nova_modalidade.nome, "Nome");
+	capitaliza(&nova_modalidade);
+
+	fopen_s(&p_modalidades, "modalidades.txt", "r");
+
+	if (p_modalidades != NULL) {
+
+		while (!feof(p_modalidades)) {
+			fread(&info_modalidade, sizeof(modalidade_t), 1, p_modalidades);
+
+			if (!strcmp(info_modalidade.nome, nova_modalidade.nome)) {
+				printf("\n");
+				mostra_modalidade(info_modalidade);
+
+				printf("Esta modalidade ja existe!\n");
+
+				rewind(p_modalidades);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
+		}
+
+		fclose(p_modalidades);
+	}
+
+	recebe_string(nova_modalidade.equipamentos, "Equipamentos");
 	nova_modalidade.equipamentos[0] =
 		toupper(nova_modalidade.equipamentos[0]);
 
-	do {
-		printf("\nNumero participantes por evento/partida: ");
-		scanf_s("%d%*c", &nova_modalidade.participantes);
-		if (nova_modalidade.participantes <= 0) {
-			printf("\nEntrada invalida, tente novamente!\n");
-		}
-	} while (nova_modalidade.participantes <= 0);
+	nova_modalidade.participantes = recebe_numero("Participantes");
 
-	do {
-		printf("\nEm equipe?\n1 = Sim / 0 = Nao\n>>>   ");
-		scanf_s("%d%*c", &opcao);
-
-		switch (opcao) {
-			case 0:
-				nova_modalidade.equipe = false;
-				break;
-			case 1:
-				nova_modalidade.equipe = true;
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				break;
-		}
-	} while (opcao != 0 && opcao != 1);
+	recebe_bool(nova_modalidade.equipe, "Em equipe");
 
 	limpa_tela();
 	mostra_modalidade(nova_modalidade);
@@ -839,22 +660,22 @@ void cadastra_modalidade() {
 
 	do {
 		switch (manter) {
-			case 0:
-				printf("Descartando informacoes...\n");
-				break;
-			case 1:
-				fopen_s(&p_modalidades, "modalidades.txt", "a");
-				if (p_modalidades == NULL) {
-					printf("Erro ao abrir arquivo!\n");
-					exit(EXIT_FAILURE);
-				}
-				fwrite(&nova_modalidade, sizeof(modalidade_t), 1, p_modalidades);
-				fclose(p_modalidades);
-				printf("Cadastro concluido com sucesso!\n");
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				break;
+		case 0:
+			printf("Descartando informacoes...\n");
+			break;
+		case 1:
+			fopen_s(&p_modalidades, "modalidades.txt", "a");
+			if (p_modalidades == NULL) {
+				printf("Erro ao abrir arquivo!\n");
+				exit(EXIT_FAILURE);
+			}
+			fwrite(&nova_modalidade, sizeof(modalidade_t), 1, p_modalidades);
+			fclose(p_modalidades);
+			printf("Cadastro concluido com sucesso!\n");
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
 		}
 	} while (manter != 0 && manter != 1);
 
@@ -863,46 +684,42 @@ void cadastra_modalidade() {
 }
 
 void cadastra_pais() {
-	int manter, opcao;
-	pais_t novo_pais;
-	FILE *p_paises;
+	int manter;
+	pais_t novo_pais, info_pais;
+	FILE* p_paises;
 
 	memset(&novo_pais, 0, sizeof(pais_t));
+	memset(&info_pais, 0, sizeof(pais_t));
 
 	printf("Insira as informacoes do pais:\n");
-	do {
-		printf("\nNome do pais: ");
-		fgets(novo_pais.nome, TAM_MAX, stdin);
-		novo_pais.nome[strcspn(novo_pais.nome, "\n")] = 0;
 
-		if (!(apenas_letras(novo_pais.nome))) {
-			printf("O nome do pais deve conter apenas letras!\n");
-		}
-	} while (!(apenas_letras(novo_pais.nome)));
-
+	recebe_string(novo_pais.nome, "Nome");
 	capitaliza(&novo_pais.nome);
 
-	printf("\nDescricao rapida: ");
-	fgets(novo_pais.descricao, TAM_MAX, stdin);
-	novo_pais.descricao[strcspn(novo_pais.descricao, "\n")] = 0;
-	novo_pais.descricao[0] = toupper(novo_pais.descricao[0]);
+	fopen_s(&p_paises, "paises.txt", "r");
 
-	do {
-		printf("\nO pais e destaque?\n1 = Sim / 0 = Nao\n>>>   ");
-		scanf_s("%d%*c", &opcao);
+	if (p_paises != NULL) {
 
-		switch (opcao) {
-			case 0:
-				novo_pais.destaque = false;
-				break;
-			case 1:
-				novo_pais.destaque = true;
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				break;
+		while (!feof(p_paises)) {
+			fread(&info_pais, sizeof(pais_t), 1, p_paises);
+
+			if (!strcmp(info_pais.nome, novo_pais.nome)) {
+				printf("\n");
+				mostra_pais(info_pais);
+
+				printf("Este pais ja existe!\n");
+
+				rewind(p_paises);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
 		}
-	} while (opcao != 0 && opcao != 1);
+	}
+
+	recebe_bool(novo_pais.destaque, "Destaque");
 
 	limpa_tela();
 	mostra_pais(novo_pais);
@@ -912,22 +729,22 @@ void cadastra_pais() {
 
 	do {
 		switch (manter) {
-			case 0:
-				printf("Descartando informacoes...\n");
-				break;
-			case 1:
-				fopen_s(&p_paises, "modalidades.txt", "a");
-				if (p_paises == NULL) {
-					printf("Erro ao abrir arquivo!\n");
-					exit(EXIT_FAILURE);
-				}
-				fwrite(&p_paises, sizeof(pais_t), 1, p_paises);
-				fclose(p_paises);
-				printf("Cadastro concluido com sucesso!\n");
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				break;
+		case 0:
+			printf("Descartando informacoes...\n");
+			break;
+		case 1:
+			fopen_s(&p_paises, "modalidades.txt", "a");
+			if (p_paises == NULL) {
+				printf("Erro ao abrir arquivo!\n");
+				exit(EXIT_FAILURE);
+			}
+			fwrite(&p_paises, sizeof(pais_t), 1, p_paises);
+			fclose(p_paises);
+			printf("Cadastro concluido com sucesso!\n");
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
 		}
 	} while (manter != 0 && manter != 1);
 
@@ -937,36 +754,47 @@ void cadastra_pais() {
 
 void cadastra_alojamento() {
 	int manter;
-	alojamento_t novo_alojamento;
-	FILE *p_alojamento;
+	alojamento_t novo_alojamento, info_alojamento;
+	FILE* p_alojamento;
 
 	memset(&novo_alojamento, 0, sizeof(alojamento_t));
+	memset(&info_alojamento, 0, sizeof(alojamento_t));
 
 	printf("Insira as informacoes do alojamento:\n");
 
-	printf("\nNome do alojamento: ");
-	fgets(novo_alojamento.nome, TAM_MAX, stdin);
-	novo_alojamento.nome[strcspn(novo_alojamento.nome, "\n")] = 0;
+	recebe_string(novo_alojamento.nome, "Nome");
 	capitaliza(&novo_alojamento.nome);
 
-	printf("\nTipo do alojamento: ");
-	fgets(novo_alojamento.tipo, TAM_MAX, stdin);
-	novo_alojamento.tipo[strcspn(novo_alojamento.tipo, "\n")] = 0;
+	fopen_s(&p_alojamento, "alojamentos.txt", "r");
+
+	if (p_alojamento != NULL) {
+
+		while (!feof(p_alojamento)) {
+			fread(&info_alojamento, sizeof(alojamento_t), 1, p_alojamento);
+
+			if (!strcmp(info_alojamento.nome, info_alojamento.nome)) {
+				printf("\n");
+				mostra_alojamento(info_alojamento);
+
+				printf("Este pais ja existe!\n");
+
+				rewind(p_alojamento);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
+		}
+	}
+
+	recebe_string(novo_alojamento.nome, "Tipo");
 	novo_alojamento.tipo[0] = toupper(novo_alojamento.tipo[0]);
 
-	printf("\nEndereco: ");
-	fgets(novo_alojamento.endereco, TAM_MAX, stdin);
-	novo_alojamento.endereco[strcspn(novo_alojamento.endereco, "\n")] = 0;
+	recebe_string(novo_alojamento.endereco, "Endereco");
 	capitaliza(&novo_alojamento.endereco);
 
-	do {
-		printf("Capacidade: ");
-		scanf_s("%d%*c", &novo_alojamento.capacidade);
-
-		if (novo_alojamento.capacidade <= 0) {
-			printf("Entrada inválida, tente novamente!\n");
-		}
-	} while (novo_alojamento.capacidade <= 0);
+	recebe_numero(novo_alojamento.capacidade, "Capacidade");
 
 	limpa_tela();
 	mostra_alojamento(novo_alojamento);
@@ -976,22 +804,22 @@ void cadastra_alojamento() {
 
 	do {
 		switch (manter) {
-			case 0:
-				printf("Descartando informacoes...\n");
-				break;
-			case 1:
-				fopen_s(&p_alojamento, "alojamentos.txt", "a");
-				if (p_alojamento == NULL) {
-					printf("Erro ao abrir arquivo!\n");
-					exit(EXIT_FAILURE);
-				}
-				fwrite(&p_alojamento, sizeof(alojamento_t), 1, p_alojamento);
-				fclose(p_alojamento);
-				printf("Cadastro concluido com sucesso!\n");
-				break;
-			default:
-				printf("\nOpcao invalida, tente novamente!\n");
-				break;
+		case 0:
+			printf("Descartando informacoes...\n");
+			break;
+		case 1:
+			fopen_s(&p_alojamento, "alojamentos.txt", "a");
+			if (p_alojamento == NULL) {
+				printf("Erro ao abrir arquivo!\n");
+				exit(EXIT_FAILURE);
+			}
+			fwrite(&p_alojamento, sizeof(alojamento_t), 1, p_alojamento);
+			fclose(p_alojamento);
+			printf("Cadastro concluido com sucesso!\n");
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
 		}
 	} while (manter != 0 && manter != 1);
 
@@ -1001,31 +829,46 @@ void cadastra_alojamento() {
 
 void cadastra_local_evento() {
 	int manter;
-	local_evento_t novo_local_evento;
+	local_evento_t novo_local_evento, info_local_evento;
 	FILE* p_local_evento;
 
 	memset(&novo_local_evento, 0, sizeof(local_evento_t));
+	memset(&info_local_evento, 0, sizeof(local_evento_t));
 
 	printf("Insira as informacoes do local de evento:\n");
 
-	printf("\nNome do local: ");
-	fgets(novo_local_evento.nome, TAM_MAX, stdin);
-	novo_local_evento.nome[strcspn(novo_local_evento.nome, "\n")] = 0;
+	recebe_string(novo_local_evento.nome, "Nome");
 	capitaliza(&novo_local_evento.nome);
 
-	printf("\nLocalizacao do local: ");
-	fgets(novo_local_evento.cidade, TAM_MAX, stdin);
-	novo_local_evento.cidade[strcspn(novo_local_evento.cidade, "\n")] = 0;
+	fopen_s(&p_local_evento, "local_evento.txt", "r");
+
+	if (p_local_evento != NULL) {
+
+		while (!feof(p_local_evento)) {
+			fread(&info_local_evento, sizeof(atleta_t), 1, p_local_evento);
+
+			if (!strcmp(info_local_evento.nome, novo_local_evento.nome)) {
+				printf("\n");
+				mostra_local_evento(info_local_evento);
+
+				printf("Este evento ja existe!\n");
+
+				rewind(p_local_evento);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
+		}
+
+		fclose(p_local_evento);
+	}
+
+	recebe_string(novo_local_evento.cidade, "Local");
 	novo_local_evento.cidade[0] = toupper(novo_local_evento.cidade[0]);
 
-	do {
-		printf("Capacidade: ");
-		scanf_s("%d%*c", &novo_local_evento.capacidade);
-
-		if (novo_local_evento.capacidade <= 0) {
-			printf("Entrada inválida, tente novamente!\n");
-		}
-	} while (novo_local_evento.capacidade <= 0);
+	recebe_numero(novo_local_evento.capacidade, "Capacidade");
 
 	limpa_tela();
 	mostra_local_evento(novo_local_evento);
@@ -1059,25 +902,46 @@ void cadastra_local_evento() {
 	limpa_tela();
 }
 
-/*
 void agenda_treino() {
 	int manter;
-	treino_t novo_treino;
+	treino_t novo_treino, info_treino;
 	FILE* p_treinos;
 
 	printf("Insira as informacoes do treino:\n");
 
-	printf("\n\nLocal: ");
-	fgets(novo_treino.local, TAM_MAX, stdin);
-	novo_treino.local[strcspn(novo_treino.local, "\n")] = 0;
+	recebe_string(novo_treino.local, "Local: ");
 	capitaliza(&novo_treino.local);
 
-	printf("\nData:\n");
-	printf("Dia: ");
-	scanf_s("%d%*c", &novo_treino.data.dia);
+	novo_treino.data = recebe_data(novo_treino.data);
+
+	fopen_s(&p_treinos, "treinos.txt", "r");
+
+	if (p_treinos != NULL) {
+
+		while (!feof(p_treinos)) {
+			fread(&info_treino, sizeof(treino_t), 1, p_treinos);
+
+			if (!strcmp(info_treino.local, novo_treino.local) && 
+				!compara_datas(info_treino.data, novo_treino.data)) {
+					printf("\n");
+					mostra_treino(info_treino);
+
+					printf("\nHorario ocupado!\n");
+
+					rewind(p_treinos);
+
+					getchar();
+					limpa_tela();
+
+					return;
+			}
+		}
+
+		fclose(p_treinos);
+	}
 
 	limpa_tela();
-	mostra_local_evento(novo_local_evento);
+	mostra_treino(novo_treino);
 
 	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
 	scanf_s("%d%*c", &manter);
@@ -1088,14 +952,13 @@ void agenda_treino() {
 			printf("Descartando informacoes...\n");
 			break;
 		case 1:
-			fopen_s(&p_local_evento, "local_evento.txt", "a");
-			if (p_local_evento == NULL) {
+			fopen_s(&p_treinos, "treinos.txt", "a");
+			if (p_treinos == NULL) {
 				printf("Erro ao abrir arquivo!\n");
 				exit(EXIT_FAILURE);
 			}
-			fwrite(&p_local_evento, sizeof(local_evento_t), 1,
-				p_local_evento);
-			fclose(p_local_evento);
+			fwrite(&novo_treino, sizeof(treino_t), 1, p_treinos);
+			fclose(p_treinos);
 			printf("Cadastro concluido com sucesso!\n");
 			break;
 		default:
@@ -1107,198 +970,469 @@ void agenda_treino() {
 	getchar();
 	limpa_tela();
 }
-*/
 
 void cadastra_medico() {
-	int opcao;
-	medico_t novo_medico;
-	FILE *p_medicos;
+	int manter;
+	medico_t novo_medico, info_medico;
+	FILE* p_medicos;
 
 	memset(&novo_medico, 0, sizeof(medico_t));
+	memset(&info_medico, 0, sizeof(medico_t));
 
 	printf("Insira as informacoes do atleta:\n");
 
-	do {
-		printf("\nNome completo: ");
-		fgets(novo_medico.nome, TAM_MAX, stdin);
+	recebe_string(novo_medico.nome, "Nome");
+	capitaliza(&novo_medico);
 
-		// Remove o enter da string (problema de buffer).
-		novo_medico.nome[strcspn(novo_medico.nome, "\n")] = 0;
+	fopen_s(&p_medicos, "medicos.txt", "r");
 
-		if (!(apenas_letras(novo_medico.nome))) {
-			printf("O nome deve conter apenas letras!\n");
+	if (p_medicos != NULL) {
+
+		while (!feof(p_medicos)) {
+			fread(&info_medico, sizeof(medico_t), 1, p_medicos);
+
+			if (!strcmp(info_medico.nome, novo_medico.nome)) {
+				printf("\n");
+				mostra_medico(info_medico);
+
+				printf("Este medico ja existe!\n");
+
+				rewind(p_medicos);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
 		}
-	} while (!(apenas_letras(novo_medico.nome)));
 
-	do {
-		printf("\nGenero (M / F): ");
-		novo_medico.genero = getchar();
-		novo_medico.genero = toupper(novo_medico.genero);
+		fclose(p_medicos);
+	}
 
-		if (novo_medico.genero != 'M' && novo_medico.genero != 'F') {
-			printf("\nEntrada invalida, tente novamente.\n");
-		}
-	} while (novo_medico.genero != 'M' && novo_medico.genero != 'F');
+	novo_medico.genero = recebe_genero(novo_medico.genero);
 
-	printf("\nData de nascimento:\n");
+	novo_medico.data = recebe_data(novo_medico.data);
 
-	do {
-		printf("Dia: ");
-		scanf_s("%d%*c", &novo_medico.data_nascimento.dia);
+	recebe_string(novo_medico.pais, "Pais");
 
-		if (novo_medico.data_nascimento.dia > 32 ||
-			novo_medico.data_nascimento.dia <= 0) {
-			printf("\nData invalida!\n");
-		}
-	} while (novo_medico.data_nascimento.dia > 32 ||
-			 novo_medico.data_nascimento.dia <= 0);
-
-	do {
-		printf("Mes: ");
-		scanf_s("%d%*c", &novo_medico.data_nascimento.mes);
-
-		if (novo_medico.data_nascimento.mes > 13 ||
-			novo_medico.data_nascimento.mes <= 0) {
-			printf("\nData invalida!\n");
-		}
-	} while (novo_medico.data_nascimento.mes > 13 ||
-			 novo_medico.data_nascimento.mes <= 0);
-
-	do {
-		printf("Ano: ");
-		scanf_s("%d%*c", &novo_medico.data_nascimento.ano);
-
-		if (novo_medico.data_nascimento.ano < 1960 ||
-			novo_medico.data_nascimento.ano > 2014) {
-			printf("\nData invalida!\n");
-		}
-	} while (novo_medico.data_nascimento.ano < 1960 ||
-			 novo_medico.data_nascimento.ano > 2014);
-
-	printf("\nNaturalidade:\n");
-
-	do {
-		printf("Pais: ");
-		fgets(novo_medico.naturalidade.pais, TAM_MAX, stdin);
-
-		// Remove o enter da string (problema de buffer).
-		novo_medico.naturalidade.pais[strcspn(novo_medico.naturalidade.pais,
-											  "\n")] = 0;
-
-		 // Se não for somente letras.
-		if (!(apenas_letras(novo_medico.naturalidade.pais))) {
-			printf("O nome do pais deve conter apenas letras!\n");
-		}
-	} while (!(apenas_letras(novo_medico.naturalidade.pais)));
-
-	do {
-		printf("Cidade: ");
-		fgets(novo_medico.naturalidade.cidade, TAM_MAX, stdin);
-
-		// Remove o enter da string (problema de buffer).
-		novo_medico.naturalidade.cidade[strcspn
-		(novo_medico.naturalidade.cidade, "\n")] = 0;
-
-		// Se não for somente letras:
-		if (!(apenas_letras(novo_medico.naturalidade.cidade))) {
-			printf("O nome da cidade deve conter apenas letras!\n");
-		}
-	} while (!(apenas_letras(novo_medico.naturalidade.cidade)));
-
-	do {
-		printf("\nEspecialidade médica: ");
-		fgets(novo_medico.especialidade, TAM_MAX, stdin);
-
-		// Remove o enter da string (problema de buffer).
-		novo_medico.especialidade[strcspn(novo_medico.especialidade, "\n")] = 0;
-
-		// Se não for somente letras:
-		if (!(apenas_letras(novo_medico.especialidade))) {
-			printf("A especialidade deve conter apenas letras!\n");
-		}
-	} while (!(apenas_letras(novo_medico.especialidade)));
+	recebe_string(novo_medico.especialidade, "Especialidade");
 
 	limpa_tela();
 	mostra_medico(novo_medico);
 
 	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-	scanf_s("%d%*c", &opcao);
+	scanf_s("%d%*c", &manter);
 
-	if (opcao == 1) {
-		// Abre o arquivo no modo append.
-		fopen_s(&p_medicos, "medicos.txt", "a");
-
-		// Tratamento de erro:
-		if (p_medicos == NULL) {
-			printf("Erro ao abrir arquivo!\n");
-			exit(1);
+	do {
+		switch (manter) {
+		case 0:
+			printf("Descartando informacoes...\n");
+			break;
+		case 1:
+			fopen_s(&p_medicos, "medicos.txt", "a");
+			if (p_medicos == NULL) {
+				printf("Erro ao abrir arquivo!\n");
+				exit(EXIT_FAILURE);
+			}
+			fwrite(&novo_medico, sizeof(medico_t), 1, p_medicos);
+			fclose(p_medicos);
+			printf("Cadastro concluido com sucesso!\n");
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
 		}
-
-		// Adiciona no arquivo.
-		fwrite(&novo_medico, sizeof(atleta_t), 1, p_medicos);
-		fclose(p_medicos);
-
-		printf("Cadastro concluido com sucesso!\n");
-	}
-
-	else {
-		printf("Descartando informacoes...\n");
-	}
+	} while (manter != 0 && manter != 1);
 
 	getchar();
 	limpa_tela();
 }
 
-void mostra_atleta(atleta_t info) {
-	printf("Informacoes do Atleta:\n\nNome: %s\n", info.nome);
-	printf("Genero: %c\n", info.genero);
-	printf("Data de Nascimento: %02d/%02d/%d\n", info.data_nascimento.dia,
-		   info.data_nascimento.mes, info.data_nascimento.ano);
-	printf("Naturalidade: %s\n", info.pais);
-	printf("Modalidade Esportiva: %s\n\n\n", info.modalidade);
-}
+void cadastra_funcionario() {
+	int manter;
+	funcionario_t novo_funcionario, info_funcionario;
+	FILE* p_funcionario;
 
-void mostra_modalidade(modalidade_t info) {
-	printf("Informacoes da Modalidade:\n\nNome: %s\n", info.nome);
-	printf("Equipamentos Necessarios: %s\n", info.equipamentos);
-	if (info.equipe) {
-		printf("Esporte Coletivo\n\n\n");
-	} else {
-		printf("Esporte Individual\n\n\n");
+	memset(&novo_funcionario, 0, sizeof(funcionario_t));
+	memset(&info_funcionario, 0, sizeof(funcionario_t));
+
+	printf("Insira as informacoes do atleta:\n");
+
+	recebe_string(novo_funcionario.nome, "Nome");
+	capitaliza(&novo_funcionario);
+
+	fopen_s(&p_funcionario, "funcionarios.txt", "r");
+
+	if (p_funcionario != NULL) {
+
+		while (!feof(p_funcionario)) {
+			fread(&info_funcionario, sizeof(funcionario_t), 1, p_funcionario);
+
+			if (!strcmp(info_funcionario.nome, novo_funcionario.nome)) {
+				printf("\n");
+				mostra_funcionario(info_funcionario);
+
+				printf("Este funcionario ja existe!\n");
+
+				rewind(p_funcionario);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
+		}
+
+		fclose(p_funcionario);
 	}
+
+	novo_funcionario.genero = recebe_genero();
+
+	novo_funcionario.data = recebe_data(novo_funcionario.data);
+
+	recebe_string(novo_funcionario.pais, "Pais");
+
+	recebe_string(novo_funcionario.especialidade, "Especialidade");
+
+	limpa_tela();
+	mostra_funcionario(novo_funcionario);
+
+	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
+	scanf_s("%d%*c", &manter);
+
+	do {
+		switch (manter) {
+		case 0:
+			printf("Descartando informacoes...\n");
+			break;
+		case 1:
+			fopen_s(&p_funcionario, "funcionarios.txt", "a");
+			if (p_funcionario == NULL) {
+				printf("Erro ao abrir arquivo!\n");
+				exit(EXIT_FAILURE);
+			}
+			fwrite(&novo_funcionario, sizeof(funcionario_t), 1, p_funcionario);
+			fclose(p_funcionario);
+			printf("Cadastro concluido com sucesso!\n");
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
+		}
+	} while (manter != 0 && manter != 1);
+
+	getchar();
+	limpa_tela();
 }
 
-void mostra_pais(pais_t info) {
-	printf("Informacoes do Pais:\n\nNome: %s\n", info.nome);
-	printf("Descricao: %s\n", info.descricao);
-	if (info.destaque) {
-		printf("Destaque!\n\n\n");
+void cadastra_voluntario() {
+	int manter;
+	voluntario_t novo_voluntario, info_voluntario;
+	FILE* p_voluntarios;
+
+	memset(&novo_voluntario, 0, sizeof(voluntario_t));
+	memset(&info_voluntario, 0, sizeof(voluntario_t));
+
+	printf("Insira as informacoes do atleta:\n");
+
+	recebe_string(novo_voluntario.nome, "Nome");
+	capitaliza(&novo_voluntario.nome);
+
+	fopen_s(&p_voluntarios, "voluntarios.txt", "r");
+
+	if (p_voluntarios != NULL) {
+
+		while (!feof(p_voluntarios)) {
+			fread(&info_voluntario, sizeof(voluntario_t), 1, p_voluntarios);
+
+			if (!strcmp(info_voluntario.nome, novo_voluntario.nome)) {
+				printf("\n");
+				mostra_voluntario(info_voluntario);
+
+				printf("Este funcionario ja existe!\n");
+
+				rewind(p_voluntarios);
+
+				getchar();
+				limpa_tela();
+
+				return;
+			}
+		}
+
+		fclose(p_voluntarios);
 	}
+
+	novo_voluntario.genero = recebe_genero(novo_voluntario.genero);
+
+	novo_voluntario.data = recebe_data(novo_voluntario.data);
+
+	recebe_string(novo_voluntario.pais, "Pais");
+
+	recebe_string(novo_voluntario.especialidade, "Especialidade");
+
+	limpa_tela();
+	mostra_voluntario(novo_voluntario);
+
+	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
+	scanf_s("%d%*c", &manter);
+
+	do {
+		switch (manter) {
+		case 0:
+			printf("Descartando informacoes...\n");
+			break;
+		case 1:
+			fopen_s(&p_voluntarios, "voluntarios.txt", "a");
+			if (p_voluntarios == NULL) {
+				printf("Erro ao abrir arquivo!\n");
+				exit(EXIT_FAILURE);
+			}
+			fwrite(&novo_voluntario, sizeof(medico_t), 1, p_voluntarios);
+			fclose(p_voluntarios);
+			printf("Cadastro concluido com sucesso!\n");
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			break;
+		}
+	} while (manter != 0 && manter != 1);
+
+	getchar();
+	limpa_tela();
 }
 
-void mostra_alojamento(alojamento_t info) {
-	printf("Informacoes do Alojamento:\n\nNome: %s\n", info.nome);
-	printf("Tipo do Alojamento: %s\n", info.tipo);
-	printf("Endereco: %s\n", info.endereco);
-	printf("Capacidade: %d pessoas\n", info.capacidade);
+void calendario() {
+
 }
 
-void mostra_local_evento(local_evento_t info) {
-	printf("Informacoes do Local de Evento:\n\nNome: %s\n", info.nome);
-	printf("Local do Evento: %s\n", info.cidade);
-	printf("Capacidade: %d pessoas\n", info.capacidade);
+/* Todos os menus seguirão este modelo de menu switch, foi o jeito mais facil
+ * que encontrei, mas com certeza deve ter um jeito em que não seria
+ * necessário criar um menu específico para cada tela.
+ */
+
+void menu_logins() {
+	int opcao_menu;
+
+	do {
+		printf(" ___________________ LOGINS ___________________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Novo Login                             |\n");
+		printf("|   2 - Logins Cadastrados                     |\n");
+		printf("|   3 - Remover Login                          |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &opcao_menu);
+
+		switch (opcao_menu) {
+		case 1:
+			limpa_tela();
+			cadastra_login();
+
+			break;
+		case 2:
+			limpa_tela();
+
+			break;
+		case 3:
+			printf("Opcao 3");
+			break;
+		case 0:
+			limpa_tela();
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+
+			getchar();
+			limpa_tela();
+
+			break;
+		}
+	} while (opcao_menu != 0);
 }
 
-void mostra_medico(medico_t info) {
-	printf("Informacoes do Atleta:\n\nNome: %s\n", info.nome);
-	printf("Genero: %c\n", info.genero);
-	printf("Data de Nascimento: %02d/%02d/%d\n", info.data_nascimento.dia,
-		   info.data_nascimento.mes,
-		   info.data_nascimento.ano);
-	printf("Naturalidade: %s, %s\n", info.naturalidade.cidade,
-		   info.naturalidade.pais);
-	printf("Especialidade Médica: %s\n\n\n", info.especialidade);
+void menu_relatorios() {
+	int menu_opcao;
+
+	do {
+		printf(" _______________ MENU RELATORIOS ______________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Calendario Olimpico                    |\n");
+		printf("|   2 - Contagem de Medalhas                   |\n");
+		printf("|   3 - Medalhistas                            |\n");
+		printf("|   4 - Total de Medalhas Distribuidas         |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+		case 1:
+			limpa_tela();
+			break;
+		case 2:
+			printf("Opcao 2");
+			break;
+		case 3:
+			printf("Opcao 3");
+			break;
+		case 4:
+			printf("Opcao 4");
+			break;
+		case 5:
+			printf("Opcao 5");
+			break;
+		case 6:
+			printf("Opcao 6");
+			break;
+		case 0:
+			limpa_tela();
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			getchar();
+			limpa_tela();
+			break;
+		}
+	} while (menu_opcao != 0);
 }
 
-// Executar programa: ctrl + f5 ou menu depurar > iniciar sem depuração
-// Depurar programa: f5 ou menu depurar > iniciar depuração
+void menu_cadastros() {
+	int menu_opcao;
+
+	do {
+		printf(" _______________ MENU CADASTROS _______________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Atletas                                |\n");
+		printf("|   2 - Modalidades Olimpicas                  |\n");
+		printf("|   3 - Paises Participantes                   |\n");
+		printf("|   4 - Alojamentos                            |\n");
+		printf("|   5 - Locais de Eventos                      |\n");
+		printf("|   6 - Agendamento de Treino                  |\n");
+		printf("|   7 - Medicos                                |\n");
+		printf("|   8 - Funcionarios                           |\n");
+		printf("|   9 - Voluntarios                            |\n");
+		printf("|  10 - Controle de Contingente (COVID-19)     |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+		case 1:
+			limpa_tela();
+			cadastra_atleta();
+			break;
+		case 2:
+			limpa_tela();
+			cadastra_modalidade();
+			break;
+		case 3:
+			limpa_tela();
+			cadastra_pais();
+			break;
+		case 4:
+			limpa_tela();
+			cadastra_alojamento();
+			break;
+		case 5:
+			limpa_tela();
+			cadastra_local_evento();
+			break;
+		case 6:
+			limpa_tela();
+			agenda_treino();
+			break;
+		case 7:
+			limpa_tela();
+			cadastra_medico();
+			break;
+		case 8:
+			limpa_tela();
+			cadastra_funcionario();
+			break;
+		case 9:
+			limpa_tela();
+			cadastra_voluntario();
+			break;
+		case 10:
+			limpa_tela();
+			break;
+		case 0:
+			limpa_tela();
+			break;
+		default:
+			printf("\nOpcao invalida, tente novamente!\n");
+			getchar();
+			limpa_tela();
+			break;
+		}
+	} while (menu_opcao != 0);
+}
+
+void menu_inicial() {
+	int menu_opcao;
+
+	do {
+		printf(" ________________ MENU INICIAL ________________\n");
+		printf("|                                              |\n");
+		printf("|          Selecione uma das opcoes:           |\n");
+		printf("|   1 - Cadastros                              |\n");
+		printf("|   2 - Relatorios                             |\n");
+		printf("|   3 - Gerenciamentos                         |\n");
+		printf("|   4 - Alterar Logins                         |\n");
+		printf("|   0 - Sair                                   |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+		case 1:
+			limpa_tela();
+			menu_cadastros();
+			break;
+		case 2:
+			limpa_tela();
+			menu_relatorios();
+			break;
+		case 3:
+			limpa_tela();
+
+			break;
+		case 4:
+			limpa_tela();
+			menu_logins();
+			break;
+		case 0:
+			printf("...Saindo...\n");
+			break;
+		default:
+			printf("Opcao invalida, tente novamente!\n");
+			getchar();
+			limpa_tela();
+			break;
+		}
+	} while (menu_opcao != 0);
+}
+
+int main(int argc, char *argv[]) {
+	printf(" ______________________________________________\n");
+	printf("|                                              |\n");
+	printf("|                                              |\n");
+	printf("|                                              |\n");
+	printf("|   Bem-vindo ao aplicativo de gerenciamento   |\n");
+	printf("|       das Olimpiadas de Paris de 2024!       |\n");
+	printf("|                                              |\n");
+	printf("|                                              |\n");
+	printf("|______________________________________________|\n");
+
+	getchar();
+
+	login();
+
+	menu_inicial();
+
+	return EXIT_SUCCESS;
+}
+
+/* FIM */
