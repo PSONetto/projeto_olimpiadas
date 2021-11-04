@@ -1,27 +1,12 @@
 ﻿  origem.c
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(251,43): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(262,39): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(406,9): warning C4129: 'L': sequência de escape de caractere não reconhecida
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(440,25): warning C4133: 'função': tipos incompatíveis - de 'atleta_t *' para 'char *'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(620,29): warning C4133: 'função': tipos incompatíveis - de 'modalidade_t *' para 'char *'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(697,28): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(697,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(766,34): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(766,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(795,38): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(795,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(797,42): warning C4047: 'função': 'char *' difere em níveis de indireção de 'int'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(797,31): warning C4024: 'recebe_numero': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(797,44): warning C4020: 'recebe_numero': muitos parâmetros reais
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(841,36): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(841,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(871,44): warning C4047: 'função': 'char *' difere em níveis de indireção de 'int'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(871,33): warning C4024: 'recebe_numero': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(871,46): warning C4020: 'recebe_numero': muitos parâmetros reais
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(913,31): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(913,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(985,25): warning C4133: 'função': tipos incompatíveis - de 'medico_t *' para 'char *'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1062,30): warning C4133: 'função': tipos incompatíveis - de 'funcionario_t *' para 'char *'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1139,34): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1139,13): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(252,25): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(252,14): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(263,23): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(263,14): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(278,11): warning C4477: 'scanf_s': a cadeia de formato '%f' requer um argumento do tipo 'float *', mas um argumento variadic 1 tem o tipo 'int *'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(338,43): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(349,39): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(457,9): warning C4129: 'L': sequência de escape de caractere não reconhecida
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(495,9): warning C4477: 'printf': a cadeia de formato '%d' requer um argumento do tipo 'int', mas um argumento variadic 1 tem o tipo 'char *'
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(495,9): warning C4313: 'printf': '%d' na cadeia de formato está em conflito com o argumento 1 do tipo 'char *'
   projeto_olimpiadas.vcxproj -> C:\Users\Plínio\Source\Repos\PSONetto\projeto_olimpiadas\x64\Debug\projeto_olimpiadas.exe
