@@ -61,32 +61,10 @@ typedef struct {
 	medalha_t medalhas;
 } equipe_t;
 
-//typedef struct {
-//	char nome[TAM_MAX], equipamentos[TAM_MAX];
-//	int participantes;
-//	bool equipe;
-//} modalidade_t;
-
-//typedef struct {
-//	char nome[TAM_MAX], tipo[TAM_MAX], endereco[TAM_MAX];
-//	int capacidade;
-//} alojamento_t;
-
-//typedef struct {
-//	char nome[TAM_MAX], cidade[TAM_MAX];
-//	int capacidade;
-//} local_evento_t;
-
 typedef struct {
 	char local[TAM_MAX];
 	data_t data;
 } treino_t;
-
-//typedef struct {
-//	char nome[TAM_MAX], especialidade[TAM_MAX], pais[TAM_MAX];
-//	char genero;
-//	data_t data;
-//} medico_t;
 
 typedef struct {
 	int id;
@@ -97,11 +75,7 @@ typedef struct {
 	data_t data;
 } funcionario_t;
 
-//typedef struct {
-//	char nome[TAM_MAX], especialidade[TAM_MAX], pais[TAM_MAX];
-//	char genero;
-//	data_t data;
-//} voluntario_t;
+/* FUNÇÕES */
 
 /* MISC */
 
@@ -326,7 +300,7 @@ int recebe_id() {
 	int id;
 
 	do {
-		printf("\nID: ", tipo);
+		printf("\nID: ");
 		scanf_s("%d%*c", &id);
 		if (id <= 0 || id > 9999) {
 			printf("\nEntrada invalida, tente novamente!\n");
@@ -451,7 +425,7 @@ void login() {
 /* Mostradores */
 
 void mostra_funcionario(funcionario_t info) {
-	printf("Informacoes do Funcionario:\n\nID do funcionario: %d\n", info.id);
+	printf("Informacoes do Funcionario:\n\nID: %d\n", info.id);
 	printf("Nome: %s\n", info.nome);
 	printf("Genero: %c\n", info.genero);
 	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
@@ -486,7 +460,7 @@ void mostra_evento(evento_t info) {
 }
 
 void mostra_atleta(atleta_t info) {
-	printf("Informacoes do Atleta:\n\nID do Atleta: %d\n", info.id);
+	printf("Informacoes do Atleta:\n\nID: %04d\n", info.id);
 	printf("Nome: %s\n", info.nome);
 	printf("Genero: %c\n", info.genero);
 	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
@@ -507,63 +481,118 @@ void mostra_atleta(atleta_t info) {
 }
 
 void mostra_equipe(equipe_t info) {
-	printf("Informacoes da Equipe:\n\nNome: %d\n", info.nome);
+	printf("Informacoes da Equipe:\n\nID: %d\n", info.id);
+	printf("Nome: %s\n", info.nome);
 	printf("Pais: %s\n", info.pais);
 	printf("Modalidade: %s\n", info.modalidade);
 }
 
-//void mostra_modalidade(modalidade_t info) {
-//	printf("Informacoes da Modalidade:\n\nNome: %s\n", info.nome);
-//	printf("Equipamentos Necessarios: %s\n", info.equipamentos);
-//	printf("Participantes: %d\n", info.participantes);
-//	if (info.equipe) {
-//		printf("Esporte Coletivo\n\n\n");
-//	}
-//	else {
-//		printf("Esporte Individual\n\n\n");
-//	}
-//}
-
-////void mostra_pais(pais_t info) {
-////	printf("Informacoes do Pais:\n\nNome: %s\n", info.nome);
-////	printf("Descricao: %s\n", info.descricao);
-////	if (info.destaque) {
-////		printf("Destaque!\n\n\n");
-////	}
-////}
-
-//void mostra_alojamento(alojamento_t info) {
-//	printf("Informacoes do Alojamento:\n\nNome: %s\n", info.nome);
-//	printf("Tipo do Alojamento: %s\n", info.tipo);
-//	printf("Endereco: %s\n", info.endereco);
-//	printf("Capacidade: %d pessoas\n", info.capacidade);
-//}
-
-//void mostra_local_evento(local_evento_t info) {
-//	printf("Informacoes do Local de Evento:\n\nNome: %s\n", info.nome);
-//	printf("Local do Evento: %s\n", info.cidade);
-//	printf("Capacidade: %d pessoas\n", info.capacidade);
-//}
-
-//void mostra_medico(medico_t info) {
-//	printf("Informacoes do Medico:\n\nNome: %s\n", info.nome);
-//	printf("Genero: %c\n", info.genero);
-//	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
-//		info.data.mes, info.data.ano);
-//	printf("Naturalidade: %s\n", info.pais);
-//	printf("Especialidade Medica: %s\n\n\n", info.especialidade);
-//}
-
-//void mostra_voluntario(voluntario_t info) {
-//	printf("Informacoes do Voluntario:\n\nNome: %s\n", info.nome);
-//	printf("Genero: %c\n", info.genero);
-//	printf("Data de Nascimento: %02d/%02d/%d\n", info.data.dia,
-//		info.data.mes, info.data.ano);
-//	printf("Naturalidade: %s\n", info.pais);
-//	printf("Função: %s\n\n\n", info.especialidade);
-//}
-
 /* CADASTROS */
+
+void lista_funcionarios() {
+	funcionario_t info_funcionario;
+	FILE *p_funcionarios;
+
+	fopen_s(&p_funcionarios, "funcionarios.txt", "r");
+
+	if (!p_funcionarios) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_funcionario, 0, sizeof(funcionario_t));
+
+	do {
+		fread(&info_funcionario, sizeof(funcionario_t), 1, p_funcionarios);
+		if (feof(p_funcionarios)) {
+			break;
+		}
+		mostra_funcionario(info_funcionario);
+	} while (!feof(p_funcionarios));
+
+	fclose(p_funcionarios);
+
+	getchar();
+	limpa_tela();
+}
+
+void busca_funcionario() {
+	int manter, id;
+	bool encontrado = false;
+	funcionario_t info_funcionario;
+	FILE *p_funcionario;
+
+	fopen_s(&p_funcionario, "funcionarios.txt", "r");
+
+	if (!p_funcionario) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_funcionario, 0, sizeof(funcionario_t));
+
+	printf("\nInsira o ID do funcionario desejado: ");
+	id = recebe_id();
+
+	while (!feof(p_funcionario)) {
+		fread(&info_funcionario, sizeof(funcionario_t), 1, p_funcionario);
+
+		if (id == info_funcionario.id) {
+			printf("\n");
+			mostra_funcionario(info_funcionario);
+
+			encontrado = true;
+
+			printf("\nDeseja excluir?\n1 = Sim / 0 = Nao\n>>>   ");
+			scanf_s("%d%*c", &manter);
+
+			do {
+				switch (manter) {
+					case 0:
+						break;
+					case 1:
+						fopen_s(&p_funcionario, "funcionarios.txt", "a");
+						if (p_funcionario == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						memset(&info_funcionario, ' ', sizeof(funcionario_t));
+						fwrite(&info_funcionario, sizeof(funcionario_t), 1, p_funcionario);
+						fclose(p_funcionario);
+						printf("Item Removido!\n");
+						break;
+					default:
+						printf("\nOpcao invalida, tente novamente!\n");
+						break;
+				}
+			} while (manter != 0 && manter != 1);
+
+			rewind(p_funcionario);
+
+			getchar();
+			limpa_tela();
+
+			break;
+		}
+	}
+
+	if (!encontrado) {
+		printf("\nAtleta nao foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+	}
+
+	fclose(p_funcionario);
+}
 
 void cadastra_funcionario() {
 	int manter;
@@ -647,6 +676,38 @@ void cadastra_funcionario() {
 	getchar();
 	limpa_tela();
 }
+
+void calendario_treinos() {
+	evento_t info_treino;
+	FILE *p_treinos;
+
+	fopen_s(&p_treinos, "treinos.txt", "r");
+
+	if (!p_treinos) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_treino, 0, sizeof(treino_t));
+
+	do {
+		fread(&info_treino, sizeof(treino_t), 1, p_treinos);
+		if (feof(p_treinos)) {
+			break;
+		}
+		mostra_evento(info_treino);
+		printf("\n\n");
+	} while (!feof(p_treinos));
+
+	fclose(p_treinos);
+
+	getchar();
+	limpa_tela();
+}
  
 void agenda_treino() {
 	int manter;
@@ -711,6 +772,38 @@ void agenda_treino() {
 			break;
 		}
 	} while (manter != 0 && manter != 1);
+
+	getchar();
+	limpa_tela();
+}
+
+void calendario_eventos() {
+	evento_t info_evento;
+	FILE *p_eventos;
+
+	fopen_s(&p_eventos, "eventos.txt", "r");
+
+	if (!p_eventos) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_evento, 0, sizeof(evento_t));
+
+	do {
+		fread(&info_evento, sizeof(evento_t), 1, p_eventos);
+		if (feof(p_eventos)) {
+			break;
+		}
+		mostra_evento(info_evento);
+		printf("\n\n");
+	} while (!feof(p_eventos));
+
+	fclose(p_eventos);
 
 	getchar();
 	limpa_tela();
@@ -797,8 +890,104 @@ void cadastra_evento() {
 	limpa_tela();
 }
 
+void medalha_atleta() {
+	int manter, id;
+	bool encontrado = false;
+	atleta_t info_atleta;
+	FILE *p_atletas;
+
+	fopen_s(&p_atletas, "atletas.txt", "r");
+
+	if (!p_atletas) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_atleta, 0, sizeof(atleta_t));
+
+	printf("\nInsira o ID do atleta desejado: ");
+	id = recebe_id();
+
+	while (!feof(p_atletas)) {
+		fread(&info_atleta, sizeof(atleta_t), 1, p_atletas);
+
+		if (id == info_atleta.id) {
+			printf("\n");
+			mostra_atleta(info_atleta);
+
+			encontrado = true;
+
+			printf("\n1 - Ouro\n2 - Prata\n3 - Bronze\n>>>   ");
+			scanf_s("%d%*c", &manter);
+
+			do {
+				switch (manter) {
+					case 0:
+						break;
+					case 1:
+						fopen_s(&p_atletas, "atletas.txt", "a");
+						if (p_atletas == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						info_atleta.medalhas.ouro = recebe_inteiro("Ouro");
+						fwrite(&info_atleta, sizeof(atleta_t), 1, p_atletas);
+						fclose(p_atletas);
+						printf("Medalha adicionada!\n");
+						break;
+					case 2:
+						fopen_s(&p_atletas, "atletas.txt", "a");
+						if (p_atletas == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						info_atleta.medalhas.prata = recebe_inteiro("Prata");
+						fwrite(&info_atleta, sizeof(atleta_t), 1, p_atletas);
+						fclose(p_atletas);
+						printf("Medalha adicionada!\n");
+						break;
+					case 3:
+						fopen_s(&p_atletas, "atletas.txt", "a");
+						if (p_atletas == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						info_atleta.medalhas.bronze = recebe_inteiro("Bronze");
+						fwrite(&info_atleta, sizeof(atleta_t), 1, p_atletas);
+						fclose(p_atletas);
+						printf("Medalha adicionada!\n");
+						break;
+					default:
+						printf("\nOpcao invalida, tente novamente!\n");
+						break;
+				}
+			} while (manter != 0 && manter != 1);
+
+			rewind(p_atletas);
+
+			getchar();
+			limpa_tela();
+
+			break;
+		}
+	}
+
+	if (!encontrado) {
+		printf("\Equipe nao foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+	}
+
+	fclose(p_atletas);
+}
+
 void lista_atletas() {
-	atleta_t atleta_info;
+	atleta_t info_atleta;
 	FILE* p_atletas;
 
 	fopen_s(&p_atletas, "atletas.txt", "r");
@@ -812,14 +1001,14 @@ void lista_atletas() {
 		return;
 	}
 
-	memset(&atleta_info, 0, sizeof(atleta_t));
+	memset(&info_atleta, 0, sizeof(atleta_t));
 
 	do {
-		fread(&atleta_info, sizeof(atleta_t), 1, p_atletas);
+		fread(&info_atleta, sizeof(atleta_t), 1, p_atletas);
 		if (feof(p_atletas)) {
 			break;
 		}
-		mostra_atleta(atleta_info);
+		mostra_atleta(info_atleta);
 	} while (!feof(p_atletas));
 
 	fclose(p_atletas);
@@ -829,8 +1018,7 @@ void lista_atletas() {
 }
 
 void busca_atleta() {
-	int manter;
-	char nome_atleta[TAM_MAX];
+	int manter, id;
 	bool encontrado = false;
 	atleta_t info_atleta;
 	FILE* p_atletas;
@@ -848,13 +1036,13 @@ void busca_atleta() {
 
 	memset(&info_atleta, 0, sizeof(atleta_t));
 
-	printf("\nInsira o nome do atleta desejado: ");
-	recebe_nome(info_atleta.nome, "do Atleta");
+	printf("\nInsira o ID do atleta desejado: ");
+	id = recebe_id();
 
 	while (!feof(p_atletas)) {
 		fread(&info_atleta, sizeof(atleta_t), 1, p_atletas);
 
-		if (!(strcmp(info_atleta.nome, nome_atleta))) {
+		if (id == info_atleta.id) {
 			printf("\n");
 			mostra_atleta(info_atleta);
 
@@ -988,16 +1176,15 @@ void cadastra_atleta() {
 	limpa_tela();
 }
 
-void busca_atleta() {
-	int manter;
-	char nome_equipe[TAM_MAX];
+void medalha_equipe() {
+	int manter, id;
 	bool encontrado = false;
-	atleta_t info_atleta;
-	FILE* p_atletas;
+	equipe_t info_equipe;
+	FILE *p_equipes;
 
-	fopen_s(&p_atletas, "atletas.txt", "r");
+	fopen_s(&p_equipes, "equipes.txt", "r");
 
-	if (!p_atletas) {
+	if (!p_equipes) {
 		printf("Nenhum cadastro foi encontrado!\n");
 
 		getchar();
@@ -1006,17 +1193,144 @@ void busca_atleta() {
 		return;
 	}
 
-	memset(&info_atleta, 0, sizeof(atleta_t));
+	memset(&info_equipe, 0, sizeof(equipe_t));
 
-	printf("\nInsira o nome do atleta desejado: ");
-	recebe_nome(info_atleta.nome, "do Atleta");
+	printf("\nInsira o ID da equipe desejada: ");
+	id = recebe_id();
 
-	while (!feof(p_atletas)) {
-		fread(&info_atleta, sizeof(atleta_t), 1, p_atletas);
+	while (!feof(p_equipes)) {
+		fread(&info_equipe, sizeof(equipe_t), 1, p_equipes);
 
-		if (!(strcmp(info_atleta.nome, nome_atleta))) {
+		if (id == info_equipe.id) {
 			printf("\n");
-			mostra_atleta(info_atleta);
+			mostra_equipe(info_equipe);
+
+			encontrado = true;
+
+			printf("\n1 - Ouro\n2 - Prata\n3 - Bronze\n>>>   ");
+			scanf_s("%d%*c", &manter);
+
+			do {
+				switch (manter) {
+					case 0:
+						break;
+					case 1:
+						fopen_s(&p_equipes, "equipes.txt", "a");
+						if (p_equipes == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						info_equipe.medalhas.ouro = recebe_inteiro("Ouro");
+						fwrite(&info_equipe, sizeof(equipe_t), 1, p_equipes);
+						fclose(p_equipes);
+						printf("Medalha adicionada!\n");
+						break;
+					case 2:
+						fopen_s(&p_equipes, "equipes.txt", "a");
+						if (p_equipes == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						info_equipe.medalhas.prata = recebe_inteiro("Prata");
+						fwrite(&info_equipe, sizeof(equipe_t), 1, p_equipes);
+						fclose(p_equipes);
+						printf("Medalha adicionada!\n");
+						break;
+					case 3:
+						fopen_s(&p_equipes, "equipes.txt", "a");
+						if (p_equipes == NULL) {
+							printf("Erro ao abrir arquivo!\n");
+							exit(EXIT_FAILURE);
+						}
+						info_equipe.medalhas.bronze = recebe_inteiro("Bronze");
+						fwrite(&info_equipe, sizeof(equipe_t), 1, p_equipes);
+						fclose(p_equipes);
+						printf("Medalha adicionada!\n");
+						break;
+					default:
+						printf("\nOpcao invalida, tente novamente!\n");
+						break;
+				}
+			} while (manter != 0 && manter != 1);
+
+			rewind(p_equipes);
+
+			getchar();
+			limpa_tela();
+
+			break;
+		}
+	}
+
+	if (!encontrado) {
+		printf("\Equipe nao foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+	}
+
+	fclose(p_equipes);
+}
+
+void lista_equipes() {
+	equipe_t info_equipe;
+	FILE *p_equipes;
+
+	fopen_s(&p_equipes, "equipes.txt", "r");
+
+	if (!p_equipes) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_equipe, 0, sizeof(equipe_t));
+
+	do {
+		fread(&info_equipe, sizeof(equipe_t), 1, p_equipes);
+		if (feof(p_equipes)) {
+			break;
+		}
+		mostra_equipe(info_equipe);
+	} while (!feof(p_equipes));
+
+	fclose(p_equipes);
+
+	getchar();
+	limpa_tela();
+}
+
+void busca_equipe() {
+	int manter, id;
+	bool encontrado = false;
+	equipe_t info_equipe;
+	FILE* p_equipes;
+
+	fopen_s(&p_equipes, "equipes.txt", "r");
+
+	if (!p_equipes) {
+		printf("Nenhum cadastro foi encontrado!\n");
+
+		getchar();
+		limpa_tela();
+
+		return;
+	}
+
+	memset(&info_equipe, 0, sizeof(equipe_t));
+
+	printf("\nInsira o ID da equipe desejada: ");
+	id = recebe_id();
+
+	while (!feof(p_equipes)) {
+		fread(&info_equipe, sizeof(equipe_t), 1, p_equipes);
+
+		if (id == info_equipe.id) {
+			printf("\n");
+			mostra_equipe(info_equipe);
 
 			encontrado = true;
 
@@ -1028,14 +1342,14 @@ void busca_atleta() {
 				case 0:
 					break;
 				case 1:
-					fopen_s(&p_atletas, "atletas.txt", "a");
-					if (p_atletas == NULL) {
+					fopen_s(&p_equipes, "equipes.txt", "a");
+					if (p_equipes == NULL) {
 						printf("Erro ao abrir arquivo!\n");
 						exit(EXIT_FAILURE);
 					}
-					memset(&info_atleta, 0, sizeof(atleta_t));
-					fwrite(&info_atleta, sizeof(atleta_t), 1, p_atletas);
-					fclose(p_atletas);
+					memset(&info_equipe, 0, sizeof(equipe_t));
+					fwrite(&info_equipe, sizeof(equipe_t), 1, p_equipes);
+					fclose(p_equipes);
 					printf("Item Removido!\n");
 					break;
 				default:
@@ -1044,7 +1358,7 @@ void busca_atleta() {
 				}
 			} while (manter != 0 && manter != 1);
 
-			rewind(p_atletas);
+			rewind(p_equipes);
 
 			getchar();
 			limpa_tela();
@@ -1054,13 +1368,13 @@ void busca_atleta() {
 	}
 
 	if (!encontrado) {
-		printf("\nAtleta nao foi encontrado!\n");
+		printf("\Equipe nao foi encontrado!\n");
 
 		getchar();
 		limpa_tela();
 	}
 
-	fclose(p_atletas);
+	fclose(p_equipes);
 }
 
 void cadastra_equipe() {
@@ -1073,8 +1387,8 @@ void cadastra_equipe() {
 
 	printf("Insira as informacoes:\n\n");
 
-	
 	nova_equipe.id = recebe_id();
+
 	fopen_s(&p_equipes, "equipes.txt", "r");
 
 	if (p_equipes != NULL) {
@@ -1137,493 +1451,119 @@ void cadastra_equipe() {
 	limpa_tela();
 }
 
-//void cadastra_modalidade() {
-//	int manter;
-//	modalidade_t nova_modalidade, info_modalidade;
-//	FILE* p_modalidades;
-//
-//	memset(&nova_modalidade, 0, sizeof(modalidade_t));
-//	memset(&info_modalidade, 0, sizeof(modalidade_t));
-//
-//	printf("Insira as informacoes da modalidade:\n");
-//
-//	recebe_string(nova_modalidade.nome, "Nome");
-//	capitaliza(&nova_modalidade);
-//
-//	fopen_s(&p_modalidades, "modalidades.txt", "r");
-//
-//	if (p_modalidades != NULL) {
-//
-//		while (!feof(p_modalidades)) {
-//			fread(&info_modalidade, sizeof(modalidade_t), 1, p_modalidades);
-//
-//			if (!strcmp(info_modalidade.nome, nova_modalidade.nome)) {
-//				printf("\n");
-//				mostra_modalidade(info_modalidade);
-//
-//				printf("Esta modalidade ja existe!\n");
-//
-//				rewind(p_modalidades);
-//
-//				getchar();
-//				limpa_tela();
-//
-//				return;
-//			}
-//		}
-//
-//		fclose(p_modalidades);
-//	}
-//
-//	recebe_string(nova_modalidade.equipamentos, "Equipamentos");
-//	
-//
-//	nova_modalidade.participantes = recebe_numero("Participantes");
-//
-//	recebe_bool(nova_modalidade.equipe, "Em equipe");
-//
-//	limpa_tela();
-//	mostra_modalidade(nova_modalidade);
-//
-//	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-//	scanf_s("%d%*c", &manter);
-//
-//	do {
-//		switch (manter) {
-//		case 0:
-//			printf("Descartando informacoes...\n");
-//			break;
-//		case 1:
-//			fopen_s(&p_modalidades, "modalidades.txt", "a");
-//			if (p_modalidades == NULL) {
-//				printf("Erro ao abrir arquivo!\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			fwrite(&nova_modalidade, sizeof(modalidade_t), 1, p_modalidades);
-//			fclose(p_modalidades);
-//			printf("Cadastro concluido com sucesso!\n");
-//			break;
-//		default:
-//			printf("\nOpcao invalida, tente novamente!\n");
-//			break;
-//		}
-//	} while (manter != 0 && manter != 1);
-//
-//	getchar();
-//	limpa_tela();
-//}
-
-//void cadastra_pais() {
-//	int manter;
-//	pais_t novo_pais, info_pais;
-//	FILE* p_paises;
-//
-//	memset(&novo_pais, 0, sizeof(pais_t));
-//	memset(&info_pais, 0, sizeof(pais_t));
-//
-//	printf("Insira as informacoes do pais:\n");
-//
-//	recebe_string(novo_pais.nome, "Nome");
-//	capitaliza(&novo_pais.nome);
-//
-//	fopen_s(&p_paises, "paises.txt", "r");
-//
-//	if (p_paises != NULL) {
-//
-//		while (!feof(p_paises)) {
-//			fread(&info_pais, sizeof(pais_t), 1, p_paises);
-//
-//			if (!strcmp(info_pais.nome, novo_pais.nome)) {
-//				printf("\n");
-//				mostra_pais(info_pais);
-//
-//				printf("Este pais ja existe!\n");
-//
-//				rewind(p_paises);
-//
-//				getchar();
-//				limpa_tela();
-//
-//				return;
-//			}
-//		}
-//	}
-//
-//	recebe_bool(novo_pais.destaque, "Destaque");
-//
-//	limpa_tela();
-//	mostra_pais(novo_pais);
-//
-//	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-//	scanf_s("%d%*c", &manter);
-//
-//	do {
-//		switch (manter) {
-//		case 0:
-//			printf("Descartando informacoes...\n");
-//			break;
-//		case 1:
-//			fopen_s(&p_paises, "modalidades.txt", "a");
-//			if (p_paises == NULL) {
-//				printf("Erro ao abrir arquivo!\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			fwrite(&p_paises, sizeof(pais_t), 1, p_paises);
-//			fclose(p_paises);
-//			printf("Cadastro concluido com sucesso!\n");
-//			break;
-//		default:
-//			printf("\nOpcao invalida, tente novamente!\n");
-//			break;
-//		}
-//	} while (manter != 0 && manter != 1);
-//
-//	getchar();
-//	limpa_tela();
-//}
-
-//void cadastra_alojamento() {
-//	int manter;
-//	alojamento_t novo_alojamento, info_alojamento;
-//	FILE* p_alojamento;
-//
-//	memset(&novo_alojamento, 0, sizeof(alojamento_t));
-//	memset(&info_alojamento, 0, sizeof(alojamento_t));
-//
-//	printf("Insira as informacoes do alojamento:\n");
-//
-//	recebe_string(novo_alojamento.nome, "Nome");
-//	capitaliza(&novo_alojamento.nome);
-//
-//	fopen_s(&p_alojamento, "alojamentos.txt", "r");
-//
-//	if (p_alojamento != NULL) {
-//
-//		while (!feof(p_alojamento)) {
-//			fread(&info_alojamento, sizeof(alojamento_t), 1, p_alojamento);
-//
-//			if (!strcmp(info_alojamento.nome, info_alojamento.nome)) {
-//				printf("\n");
-//				mostra_alojamento(info_alojamento);
-//
-//				printf("Este pais ja existe!\n");
-//
-//				rewind(p_alojamento);
-//
-//				getchar();
-//				limpa_tela();
-//
-//				return;
-//			}
-//		}
-//	}
-//
-//	recebe_string(novo_alojamento.nome, "Tipo");
-//	novo_alojamento.tipo[0] = toupper(novo_alojamento.tipo[0]);
-//
-//	recebe_string(novo_alojamento.endereco, "Endereco");
-//	capitaliza(&novo_alojamento.endereco);
-//
-//	recebe_numero(novo_alojamento.capacidade, "Capacidade");
-//
-//	limpa_tela();
-//	mostra_alojamento(novo_alojamento);
-//
-//	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-//	scanf_s("%d%*c", &manter);
-//
-//	do {
-//		switch (manter) {
-//		case 0:
-//			printf("Descartando informacoes...\n");
-//			break;
-//		case 1:
-//			fopen_s(&p_alojamento, "alojamentos.txt", "a");
-//			if (p_alojamento == NULL) {
-//				printf("Erro ao abrir arquivo!\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			fwrite(&p_alojamento, sizeof(alojamento_t), 1, p_alojamento);
-//			fclose(p_alojamento);
-//			printf("Cadastro concluido com sucesso!\n");
-//			break;
-//		default:
-//			printf("\nOpcao invalida, tente novamente!\n");
-//			break;
-//		}
-//	} while (manter != 0 && manter != 1);
-//
-//	getchar();
-//	limpa_tela();
-//}
-
-//void cadastra_local_evento() {
-//	int manter;
-//	local_evento_t novo_local_evento, info_local_evento;
-//	FILE* p_local_evento;
-//
-//	memset(&novo_local_evento, 0, sizeof(local_evento_t));
-//	memset(&info_local_evento, 0, sizeof(local_evento_t));
-//
-//	printf("Insira as informacoes do local de evento:\n");
-//
-//	recebe_string(novo_local_evento.nome, "Nome");
-//	capitaliza(&novo_local_evento.nome);
-//
-//	fopen_s(&p_local_evento, "local_evento.txt", "r");
-//
-//	if (p_local_evento != NULL) {
-//
-//		while (!feof(p_local_evento)) {
-//			fread(&info_local_evento, sizeof(atleta_t), 1, p_local_evento);
-//
-//			if (!strcmp(info_local_evento.nome, novo_local_evento.nome)) {
-//				printf("\n");
-//				mostra_local_evento(info_local_evento);
-//
-//				printf("Este evento ja existe!\n");
-//
-//				rewind(p_local_evento);
-//
-//				getchar();
-//				limpa_tela();
-//
-//				return;
-//			}
-//		}
-//
-//		fclose(p_local_evento);
-//	}
-//
-//	recebe_string(novo_local_evento.cidade, "Local");
-//	novo_local_evento.cidade[0] = toupper(novo_local_evento.cidade[0]);
-//
-//	recebe_numero(novo_local_evento.capacidade, "Capacidade");
-//
-//	limpa_tela();
-//	mostra_local_evento(novo_local_evento);
-//
-//	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-//	scanf_s("%d%*c", &manter);
-//
-//	do {
-//		switch (manter) {
-//		case 0:
-//			printf("Descartando informacoes...\n");
-//			break;
-//		case 1:
-//			fopen_s(&p_local_evento, "local_evento.txt", "a");
-//			if (p_local_evento == NULL) {
-//				printf("Erro ao abrir arquivo!\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			fwrite(&p_local_evento, sizeof(local_evento_t), 1,
-//				p_local_evento);
-//			fclose(p_local_evento);
-//			printf("Cadastro concluido com sucesso!\n");
-//			break;
-//		default:
-//			printf("\nOpcao invalida, tente novamente!\n");
-//			break;
-//		}
-//	} while (manter != 0 && manter != 1);
-//
-//	getchar();
-//	limpa_tela();
-//}
-
-//void cadastra_medico() {
-//	int manter;
-//	medico_t novo_medico, info_medico;
-//	FILE* p_medicos;
-//
-//	memset(&novo_medico, 0, sizeof(medico_t));
-//	memset(&info_medico, 0, sizeof(medico_t));
-//
-//	printf("Insira as informacoes do atleta:\n");
-//
-//	recebe_string(novo_medico.nome, "Nome");
-//	capitaliza(&novo_medico);
-//
-//	fopen_s(&p_medicos, "medicos.txt", "r");
-//
-//	if (p_medicos != NULL) {
-//
-//		while (!feof(p_medicos)) {
-//			fread(&info_medico, sizeof(medico_t), 1, p_medicos);
-//
-//			if (!strcmp(info_medico.nome, novo_medico.nome)) {
-//				printf("\n");
-//				mostra_medico(info_medico);
-//
-//				printf("Este medico ja existe!\n");
-//
-//				rewind(p_medicos);
-//
-//				getchar();
-//				limpa_tela();
-//
-//				return;
-//			}
-//		}
-//
-//		fclose(p_medicos);
-//	}
-//
-//	novo_medico.genero = recebe_genero(novo_medico.genero);
-//
-//	novo_medico.data = recebe_data(novo_medico.data);
-//
-//	recebe_string(novo_medico.pais, "Pais");
-//
-//	recebe_string(novo_medico.especialidade, "Especialidade");
-//
-//	limpa_tela();
-//	mostra_medico(novo_medico);
-//
-//	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-//	scanf_s("%d%*c", &manter);
-//
-//	do {
-//		switch (manter) {
-//		case 0:
-//			printf("Descartando informacoes...\n");
-//			break;
-//		case 1:
-//			fopen_s(&p_medicos, "medicos.txt", "a");
-//			if (p_medicos == NULL) {
-//				printf("Erro ao abrir arquivo!\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			fwrite(&novo_medico, sizeof(medico_t), 1, p_medicos);
-//			fclose(p_medicos);
-//			printf("Cadastro concluido com sucesso!\n");
-//			break;
-//		default:
-//			printf("\nOpcao invalida, tente novamente!\n");
-//			break;
-//		}
-//	} while (manter != 0 && manter != 1);
-//
-//	getchar();
-//	limpa_tela();
-//}
-
-//void cadastra_voluntario() {
-//	int manter;
-//	voluntario_t novo_voluntario, info_voluntario;
-//	FILE* p_voluntarios;
-//
-//	memset(&novo_voluntario, 0, sizeof(voluntario_t));
-//	memset(&info_voluntario, 0, sizeof(voluntario_t));
-//
-//	printf("Insira as informacoes do atleta:\n");
-//
-//	recebe_string(novo_voluntario.nome, "Nome");
-//	capitaliza(&novo_voluntario.nome);
-//
-//	fopen_s(&p_voluntarios, "voluntarios.txt", "r");
-//
-//	if (p_voluntarios != NULL) {
-//
-//		while (!feof(p_voluntarios)) {
-//			fread(&info_voluntario, sizeof(voluntario_t), 1, p_voluntarios);
-//
-//			if (!strcmp(info_voluntario.nome, novo_voluntario.nome)) {
-//				printf("\n");
-//				mostra_voluntario(info_voluntario);
-//
-//				printf("Este funcionario ja existe!\n");
-//
-//				rewind(p_voluntarios);
-//
-//				getchar();
-//				limpa_tela();
-//
-//				return;
-//			}
-//		}
-//
-//		fclose(p_voluntarios);
-//	}
-//
-//	novo_voluntario.genero = recebe_genero(novo_voluntario.genero);
-//
-//	novo_voluntario.data = recebe_data(novo_voluntario.data);
-//
-//	recebe_string(novo_voluntario.pais, "Pais");
-//
-//	recebe_string(novo_voluntario.especialidade, "Especialidade");
-//
-//	limpa_tela();
-//	mostra_voluntario(novo_voluntario);
-//
-//	printf("\nOs dados estao corretos?\n1 = Sim / 0 = Nao\n>>>   ");
-//	scanf_s("%d%*c", &manter);
-//
-//	do {
-//		switch (manter) {
-//		case 0:
-//			printf("Descartando informacoes...\n");
-//			break;
-//		case 1:
-//			fopen_s(&p_voluntarios, "voluntarios.txt", "a");
-//			if (p_voluntarios == NULL) {
-//				printf("Erro ao abrir arquivo!\n");
-//				exit(EXIT_FAILURE);
-//			}
-//			fwrite(&novo_voluntario, sizeof(medico_t), 1, p_voluntarios);
-//			fclose(p_voluntarios);
-//			printf("Cadastro concluido com sucesso!\n");
-//			break;
-//		default:
-//			printf("\nOpcao invalida, tente novamente!\n");
-//			break;
-//		}
-//	} while (manter != 0 && manter != 1);
-//
-//	getchar();
-//	limpa_tela();
-//}
-
-void calendario() {
-	evento_t info_evento;
-	FILE* p_eventos;
-
-	fopen_s(&p_eventos, "eventos.txt", "r");
-
-	if (!p_eventos) {
-		printf("Nenhum cadastro foi encontrado!\n");
-
-		getchar();
-		limpa_tela();
-
-		return;
-	}
-
-	memset(&info_evento, 0, sizeof(evento_t));
-
-	do {
-		fread(&info_evento, sizeof(evento_t), 1, p_eventos);
-		if (feof(p_eventos)) {
-			break;
-		}
-		mostra_evento(info_evento);
-		printf("\n\n");
-	} while (!feof(p_eventos));
-
-	fclose(p_eventos);
-
-	getchar();
-	limpa_tela();
-}
-
 /* MENUS */
 
 /* Todos os menus seguirão este modelo de menu switch, foi o jeito mais facil
  * que encontrei, mas com certeza deve ter um jeito em que não seria
  * necessário criar um menu específico para cada tela.
  */
+
+void menu_funcionarios() {
+	int menu_opcao;
+
+	do {
+		printf(" _______________ MENU CADASTROS _______________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Adicionar                              |\n");
+		printf("|   2 - Buscar                                 |\n");
+		printf("|   3 - Listar                                 |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+			case 1:
+				limpa_tela();
+				cadastra_funcionario();
+				break;
+			case 2:
+				limpa_tela();
+				busca_funcionario();
+				break;
+			case 3:
+				limpa_tela();
+				lista_funcionarios();
+				break;
+			case 0:
+				limpa_tela();
+				break;
+			default:
+				printf("\nOpcao invalida, tente novamente!\n");
+				getchar();
+				limpa_tela();
+				break;
+		}
+	} while (menu_opcao != 0);
+}
+
+void menu_treinos() {
+	int menu_opcao;
+
+	do {
+		printf(" _______________ MENU CADASTROS _______________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Agendar                                |\n");
+		printf("|   2 - Calendario                             |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+			case 1:
+				limpa_tela();
+				agenda_treino();
+				break;
+			case 2:
+				limpa_tela();
+				calendario_treinos;
+				break;
+			case 0:
+				limpa_tela();
+				break;
+			default:
+				printf("\nOpcao invalida, tente novamente!\n");
+				getchar();
+				limpa_tela();
+				break;
+		}
+	} while (menu_opcao != 0);
+}
+
+void menu_eventos() {
+	int menu_opcao;
+
+	do {
+		printf(" _______________ MENU CADASTROS _______________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Agendar                                |\n");
+		printf("|   2 - Calendario                             |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+			case 1:
+				limpa_tela();
+				cadastra_evento();
+				break;
+			case 2:
+				limpa_tela();
+				calendario_eventos();
+				break;
+			case 0:
+				limpa_tela();
+				break;
+			default:
+				printf("\nOpcao invalida, tente novamente!\n");
+				getchar();
+				limpa_tela();
+				break;
+		}
+	} while (menu_opcao != 0);
+}
 
 void menu_atletas() {
 	int menu_opcao;
@@ -1647,7 +1587,7 @@ void menu_atletas() {
 			break;
 		case 2:
 			limpa_tela();
-			;
+			busca_atleta();
 			break;
 		case 3:
 			limpa_tela();
@@ -1655,11 +1595,7 @@ void menu_atletas() {
 			break;
 		case 4:
 			limpa_tela();
-			agenda_treino();
-			break;
-		case 5:
-			limpa_tela();
-			cadastra_funcionario();
+			
 			break;
 		case 0:
 			limpa_tela();
@@ -1669,6 +1605,50 @@ void menu_atletas() {
 			getchar();
 			limpa_tela();
 			break;
+		}
+	} while (menu_opcao != 0);
+}
+
+void menu_equipes() {
+	int menu_opcao;
+
+	do {
+		printf(" _______________ MENU CADASTROS _______________\n");
+		printf("|                                              |\n");
+		printf("|         Selecione uma das opcoes:            |\n");
+		printf("|   1 - Adicionar                              |\n");
+		printf("|   2 - Buscar                                 |\n");
+		printf("|   3 - Listar                                 |\n");
+		printf("|   4 - Adicionar Medalha                      |\n");
+		printf("|   0 - Voltar                                 |\n");
+		printf("|______________________________________________|\n>>>  ");
+		scanf_s("%d%*c", &menu_opcao);
+
+		switch (menu_opcao) {
+			case 1:
+				limpa_tela();
+				cadastra_equipe();
+				break;
+			case 2:
+				limpa_tela();
+				busca_equipe();
+				break;
+			case 3:
+				limpa_tela();
+				lista_equipes();
+				break;
+			case 4:
+				limpa_tela();
+				
+				break;
+			case 0:
+				limpa_tela();
+				break;
+			default:
+				printf("\nOpcao invalida, tente novamente!\n");
+				getchar();
+				limpa_tela();
+				break;
 		}
 	} while (menu_opcao != 0);
 }
@@ -1714,55 +1694,6 @@ void menu_logins() {
 	} while (opcao_menu != 0);
 }
 
-void menu_gerenciamentos() {
-	int menu_opcao;
-
-	do {
-		printf(" _____________ MENU GERENCIAMENTO _____________\n");
-		printf("|                                              |\n");
-		printf("|         Selecione uma das opcoes:            |\n");
-		printf("|   1 - Alterar Cadastros                      |\n");
-		printf("|   2 - Remover Cadastro                       |\n");
-		printf("|   3 - Eventos                                |\n");
-		printf("|   4 - Agendar Treino                         |\n");
-		printf("|   5 - Funcionarios                           |\n");
-		printf("|   0 - Voltar                                 |\n");
-		printf("|______________________________________________|\n>>>  ");
-		scanf_s("%d%*c", &menu_opcao);
-
-		switch (menu_opcao) {
-		case 1:
-			limpa_tela();
-			cadastra_equipe();
-			break;
-		case 2:
-			limpa_tela();
-			cadastra_atleta();
-			break;
-		case 3:
-			limpa_tela();
-			cadastra_evento();
-			break;
-		case 4:
-			limpa_tela();
-			agenda_treino();
-			break;
-		case 5:
-			limpa_tela();
-			cadastra_funcionario();
-			break;
-		case 0:
-			limpa_tela();
-			break;
-		default:
-			printf("\nOpcao invalida, tente novamente!\n");
-			getchar();
-			limpa_tela();
-			break;
-		}
-	} while (menu_opcao != 0);
-}
-
 void menu_relatorios() {
 	int menu_opcao;
 
@@ -1770,10 +1701,9 @@ void menu_relatorios() {
 		printf(" _______________ MENU RELATORIOS ______________\n");
 		printf("|                                              |\n");
 		printf("|         Selecione uma das opcoes:            |\n");
-		printf("|   1 - Calendario Olimpico                    |\n");
-		printf("|   2 - Contagem de Medalhas                   |\n");
-		printf("|   3 - Medalhistas                            |\n");
-		printf("|   4 - Total de Medalhas Distribuidas         |\n");
+		printf("|   1 - Contagem de Medalhas                   |\n");
+		printf("|   2 - Medalhistas                            |\n");
+		printf("|   3 - Total de Medalhas Distribuidas         |\n");
 		printf("|   0 - Voltar                                 |\n");
 		printf("|______________________________________________|\n>>>  ");
 		scanf_s("%d%*c", &menu_opcao);
@@ -1781,22 +1711,13 @@ void menu_relatorios() {
 		switch (menu_opcao) {
 		case 1:
 			limpa_tela();
-			calendario();
+			printf("Opcao 1");
 			break;
 		case 2:
 			printf("Opcao 2");
 			break;
 		case 3:
 			printf("Opcao 3");
-			break;
-		case 4:
-			printf("Opcao 4");
-			break;
-		case 5:
-			printf("Opcao 5");
-			break;
-		case 6:
-			printf("Opcao 6");
 			break;
 		case 0:
 			limpa_tela();
@@ -1829,23 +1750,23 @@ void menu_cadastros() {
 		switch (menu_opcao) {
 		case 1:
 			limpa_tela();
-			cadastra_equipe();
+			menu_equipes();
 			break;
 		case 2:
 			limpa_tela();
-			cadastra_atleta();
+			menu_atletas();
 			break;
 		case 3:
 			limpa_tela();
-			cadastra_evento();
+			menu_eventos();
 			break;
 		case 4:
 			limpa_tela();
-			agenda_treino();
+			menu_treinos();
 			break;
 		case 5:
 			limpa_tela();
-			cadastra_funcionario();
+			menu_funcionarios();
 			break;
 		case 0:
 			limpa_tela();
@@ -1868,8 +1789,7 @@ void menu_inicial() {
 		printf("|          Selecione uma das opcoes:           |\n");
 		printf("|   1 - Cadastros                              |\n");
 		printf("|   2 - Relatorios                             |\n");
-		printf("|   3 - Gerenciamentos                         |\n");
-		printf("|   4 - Alterar Logins                         |\n");
+		printf("|   3 - Alterar Logins                         |\n");
 		printf("|   0 - Sair                                   |\n");
 		printf("|______________________________________________|\n>>>  ");
 		scanf_s("%d%*c", &menu_opcao);
@@ -1885,10 +1805,6 @@ void menu_inicial() {
 			break;
 		case 3:
 			limpa_tela();
-			menu_gerenciamentos();
-			break;
-		case 4:
-			limpa_tela();
 			menu_logins();
 			break;
 		case 0:
@@ -1902,6 +1818,8 @@ void menu_inicial() {
 		}
 	} while (menu_opcao != 0);
 }
+
+/* MAIN */
 
 int main(int argc, char *argv[]) {
 	printf(" ______________________________________________\n");
