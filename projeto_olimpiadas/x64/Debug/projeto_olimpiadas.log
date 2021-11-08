@@ -1,13 +1,8 @@
 ﻿  origem.c
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(227,25): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(227,14): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(238,23): warning C4047: 'função': 'char *' difere em níveis de indireção de 'char (*)[100]'
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(238,14): warning C4024: 'capitaliza': tipos diferentes para parâmetro formal e real 1
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(327,43): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(338,39): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(446,9): warning C4129: 'L': sequência de escape de caractere não reconhecida
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(980,10): warning C4129: 'E': sequência de escape de caractere não reconhecida
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(1266,10): warning C4129: 'E': sequência de escape de caractere não reconhecida
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(1371,10): warning C4129: 'E': sequência de escape de caractere não reconhecida
-C:\Users\Núbia\source\repos\projeto_olimpiadas\projeto_olimpiadas\origem.c(1520,5): warning C4550: expressão é avaliada como uma função cuja lista de argumentos está faltando
-  projeto_olimpiadas.vcxproj -> C:\Users\Núbia\source\repos\projeto_olimpiadas\x64\Debug\projeto_olimpiadas.exe
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(376,43): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(387,39): warning C4267: '=': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(797,10): warning C4129: 'F': sequência de escape de caractere não reconhecida
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(765,6): warning C4101: 'manter': variável local não referenciada
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1121,6): warning C4101: 'manter': variável local não referenciada
+C:\Users\Plínio\source\repos\PSONetto\projeto_olimpiadas\projeto_olimpiadas\origem.c(1280,6): warning C4101: 'manter': variável local não referenciada
+  projeto_olimpiadas.vcxproj -> C:\Users\Plínio\Source\Repos\PSONetto\projeto_olimpiadas\x64\Debug\projeto_olimpiadas.exe
